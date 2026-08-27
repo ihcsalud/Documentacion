@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#103f36">
+<meta name="robots" content="noindex">
+<title>MedsSocial · Farmacia pública v122</title>
+<style>
+html,body{margin:0;min-height:100%;background:#fbfaf6;color:#173a33;font:16px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}.loading{min-height:100svh;display:grid;place-items:center;background:radial-gradient(circle at 16% 0,#e3f5ee,transparent 36%),#fbfaf6}.card{width:min(560px,calc(100% - 36px));padding:32px;border:1px solid #dce7e2;border-radius:28px;background:#fff;box-shadow:0 22px 64px rgba(18,63,55,.12)}.card strong{display:block;font:500 26px Georgia,serif}.bar{height:6px;margin:22px 0;border-radius:99px;overflow:hidden;background:#e5efeb}.bar:after{content:"";display:block;width:44%;height:100%;border-radius:inherit;background:#0c755d;animation:load 1s ease-in-out infinite alternate}@keyframes load{to{transform:translateX(125%)}}
+</style>
+</head>
+<body><div class="loading" id="loader"><div class="card"><strong>Preparando tu farmacia…</strong><div class="bar"></div><span>Consultando servicios y próximas horas disponibles.</span></div></div>
+<script>
+(async()=>{
+  const source='../farmacia-public-v121/index.html'+location.search;
+  try{
+    let html=await fetch(source,{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('No se pudo cargar la base v121');return r.text()});
+    html=html.replace('<title>Farmacia · MedsSocial 2026</title>','<title>Farmacia · MedsSocial 2026 · v122</title>');
+    html=html.replace('</style></head>',`.home-slot{position:relative;min-height:84px;transition:transform .18s ease,box-shadow .18s ease}.home-slot:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(8,50,41,.18)}.home-slot:focus-visible{outline:3px solid #9fd6c3;outline-offset:3px}.home-slot .slot-cta{display:block;margin-top:7px;color:#0c755d;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}.agenda-note{grid-column:1/-1;padding:10px 0;color:#dceae5;font-size:13px}.home-slots.loading .home-slot{min-height:78px;background:linear-gradient(100deg,#fff 20%,#eaf3ef 40%,#fff 60%);background-size:200% 100%;animation:shimmer 1.2s linear infinite}@keyframes shimmer{to{background-position:-200% 0}}@media(max-width:620px){.availability-box{padding:24px}.home-slot{min-height:72px}.home-slot strong{font-size:16px}}</style></head>`);
+    const start=html.indexOf('async function renderHomeSlots(){');
+    const end=html.indexOf('async function renderMyPharmacy()',start);
+    if(start<0||end<0)throw new Error('No se encontró renderHomeSlots');
+    const fn=`async function renderHomeSlots(){
+      const box=$('homeSlots');box.classList.add('loading');box.innerHTML='<button class="home-slot" disabled></button><button class="home-slot" disabled></button><button class="home-slot" disabled></button><span class="agenda-note">Buscando las primeras horas disponibles…</span>';
+      const jobs=[];for(let d=0;d<4;d++){const date=new Date();date.setDate(date.getDate()+d);const ds=date.toISOString().slice(0,10);for(const s of services.slice(0,3))for(const p of professionals.slice(0,2))jobs.push({ds,s,p})}
+      const results=await Promise.allSettled(jobs.map(async j=>{const r=await api('/v1/public/pharmacy/availability?service='+encodeURIComponent(j.s.id)+'&professional='+encodeURIComponent(j.p.id)+'&date='+j.ds),arr=r.data?.slots||r.data||[];return arr.slice(0,2).map(x=>({date:j.ds,time:String(typeof x==='string'?x:(x.time||x.start_time||x.starts_at)).slice(0,5),service:j.s,professional:j.p}))}));
+      const found=results.flatMap(r=>r.status==='fulfilled'?r.value:[]).filter(x=>x.time).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));const seen=new Set(),unique=[];for(const x of found){const k=x.date+'|'+x.time+'|'+x.service.id+'|'+x.professional.id;if(!seen.has(k)){seen.add(k);unique.push(x)}if(unique.length>=6)break}
+      box.classList.remove('loading');box.innerHTML=unique.length?unique.map((x,i)=>'<button class="home-slot" data-i="'+i+'"><strong>'+esc(x.time)+' · '+new Date(x.date+'T00:00:00').toLocaleDateString('es-ES',{weekday:'short',day:'numeric'})+'</strong><span>'+esc(x.service.name)+' · '+esc(x.professional.name)+'</span><span class="slot-cta">Reservar esta hora →</span></button>').join(''):'<span>No hay huecos próximos publicados.</span>';
+      qa('.home-slot[data-i]').forEach(b=>b.onclick=()=>{const x=unique[Number(b.dataset.i)];bookingCtx={service:x.service.id,professional:x.professional.id,date:x.date};selectedSlot=x.time;step=3;renderBooking();location.hash='reservar';setTimeout(()=>document.querySelector('#bookingBody input[name="name"]')?.focus(),250)})
+    }\n`;
+    html=html.slice(0,start)+fn+html.slice(end);html=html.replace('</body>','<script>document.documentElement.dataset.pharmacyVersion="122";<\/script></body>');document.open();document.write(html);document.close();
+  }catch(err){document.getElementById('loader').innerHTML='<div class="card"><strong>No hemos podido abrir la farmacia.</strong><p>La vista pública no se ha podido cargar. Reintenta en unos segundos.</p><button onclick="location.reload()" style="border:0;border-radius:999px;padding:12px 18px;background:#103f36;color:#fff;font-weight:800">Reintentar</button></div>';console.error(err)}
+})();
+</script></body></html>
