@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f3f35">
+<meta name="robots" content="noindex">
+<meta name="description" content="MedsSocial Farmacia 2026: ficha pública, servicios, profesionales, agenda, reservas y actividades.">
+<title>MedsSocial · Farmacia pública v135</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fbfaf6}#app{display:block;width:100%;height:100%;border:0;background:#fbfaf6}.boot{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:radial-gradient(circle at 14% 0,#e3f5ee,transparent 34%),#fbfaf6;color:#173a33;font:16px Inter,system-ui,-apple-system,"Segoe UI",sans-serif;transition:opacity .25s ease}.boot.hide{opacity:0;pointer-events:none}.boot-card{width:min(520px,calc(100% - 40px));padding:28px;border:1px solid #dce7e2;border-radius:28px;background:#fff;box-shadow:0 22px 64px rgba(18,63,55,.12)}.boot strong{font-size:21px}.bar{height:5px;margin-top:18px;border-radius:99px;overflow:hidden;background:#e5efeb}.bar:after{content:"";display:block;width:45%;height:100%;border-radius:inherit;background:#103f35;animation:move 1s ease-in-out infinite alternate}@keyframes move{to{transform:translateX(122%)}}@media(prefers-reduced-motion:reduce){.bar:after{animation:none}.boot{transition:none}}
+</style>
+</head>
+<body>
+<div class="boot" id="boot"><div class="boot-card"><strong>Abriendo tu farmacia…</strong><div class="bar"></div></div></div>
+<iframe id="app" title="MedsSocial Farmacia 2026"></iframe>
+<script>
+const frame=document.getElementById('app'),boot=document.getElementById('boot');
+const target='../farmacia-public-v134/index.html'+location.search+location.hash;
+frame.src=target;
+function injectPolish(doc){
+  if(doc.getElementById('v135-polish'))return;
+  const style=doc.createElement('style');
+  style.id='v135-polish';
+  style.textContent=`
+    html{scroll-padding-top:84px}
+    .btn,.slot,.quick-slot,.chip,.intent-result{min-height:44px}
+    .top{box-shadow:0 8px 26px rgba(15,63,53,.05)}
+    .photo img{filter:saturate(.92) contrast(1.02)}
+    .card,.today-card,.quick-shell,.booking,.contact-card{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+    @media(hover:hover){.card:hover,.today-card:hover,.quick-slot:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(15,63,53,.09)}}
+    @media(max-width:620px){
+      body{padding-bottom:84px}.wrap{width:min(100% - 24px,1180px)}.nav{height:62px}.brand{font-size:15px}.mark{width:38px;height:38px;border-radius:12px}
+      .hero{padding:24px 0 14px}.hero-grid{gap:20px}.hero h1{font-size:clamp(40px,13vw,54px);line-height:.96;margin:10px 0 12px}.hero p{font-size:16px;line-height:1.48;margin:0}.trust{gap:8px 12px;margin-top:14px;font-size:12px}
+      .photo{min-height:260px;border-radius:26px}.photo-card{left:12px;right:12px;bottom:12px;padding:14px 16px;border-radius:18px}.today{padding:10px 0}.today-card{padding:15px;border-radius:18px}.today-card b{font-size:15px}.today-card span{font-size:12px}
+      .intent{padding:8px 0 14px}.intent-shell{padding:19px;border-radius:24px;gap:15px}.intent h2{font-size:31px}.chips{flex-wrap:nowrap;overflow:auto;padding-bottom:2px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{flex:0 0 auto}
+      .quick{padding:4px 0 16px}.quick-shell{padding:19px;border-radius:24px}.quick-head h2{font-size:32px}.quick-slots{display:flex;overflow:auto;gap:9px;scroll-snap-type:x mandatory;padding-bottom:4px}.quick-slot{min-width:72%;scroll-snap-align:start}
+      .section{padding:42px 0}.section h2{font-size:40px}.head{margin-bottom:20px}.cards{gap:12px}.card{padding:18px;border-radius:22px}.pro-card{padding:0}.pro-body{padding:18px}
+      .booking-copy{padding:24px;border-radius:25px}.booking-copy h2{font-size:40px}.booking{padding:17px;border-radius:24px}.booking-actions{position:sticky;bottom:80px;z-index:8;margin-left:-4px;margin-right:-4px;padding:9px 4px;background:linear-gradient(transparent,#fff 28%)}
+      .slot{padding:11px 14px}.slots{gap:7px}.mobile-bar{left:8px;right:8px;bottom:max(8px,env(safe-area-inset-bottom));border-radius:18px;padding:6px;box-shadow:0 18px 42px rgba(20,50,42,.26)}.mobile-bar a{min-height:46px;display:grid;place-items:center}
+      .modal{padding:10px}.modal-card{padding:20px;border-radius:23px;max-height:calc(100dvh - 20px)}
+    }
+  `;
+  doc.head.append(style);
+  const viewport=doc.querySelector('meta[name="viewport"]');if(viewport)viewport.content='width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content';
+  for(const id of ['statusText','availabilityMessage','bookingMessage']){const el=doc.getElementById(id);if(el)el.setAttribute('aria-live','polite')}
+  doc.documentElement.dataset.frontend='v135';
+}
+function syncHash(win){try{const h=win.location.hash;if(h!==location.hash)history.replaceState(null,'',location.pathname+location.search+h)}catch{}}
+frame.addEventListener('load',()=>{try{const doc=frame.contentDocument,win=frame.contentWindow;injectPolish(doc);win.addEventListener('hashchange',()=>syncHash(win));syncHash(win);if(doc.title)document.title=doc.title.replace(/v134/i,'v135')}catch(e){console.warn('v135 polish unavailable',e)}boot.classList.add('hide');setTimeout(()=>boot.remove(),300)});
+window.addEventListener('hashchange',()=>{try{if(frame.contentWindow.location.hash!==location.hash)frame.contentWindow.location.hash=location.hash}catch{}});
+</script>
+</body>
+</html>
