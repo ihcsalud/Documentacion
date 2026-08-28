@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f3f35">
+<meta name="robots" content="noindex">
+<meta name="description" content="MedsSocial Farmacia 2026: ficha pública, servicios, profesionales, agenda, reservas, actividades y contacto.">
+<title>MedsSocial · Farmacia pública v145</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fbfaf6}#app{display:block;width:100%;height:100%;border:0;background:#fbfaf6}.boot{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:radial-gradient(circle at 14% 0,#e3f5ee,transparent 34%),#fbfaf6;color:#173a33;font:16px Inter,system-ui,-apple-system,"Segoe UI",sans-serif;transition:opacity .25s ease}.boot.hide{opacity:0;pointer-events:none}.boot-card{width:min(520px,calc(100% - 40px));padding:28px;border:1px solid #dce7e2;border-radius:28px;background:#fff;box-shadow:0 22px 64px rgba(18,63,55,.12)}.boot strong{font-size:21px}.bar{height:5px;margin-top:18px;border-radius:99px;overflow:hidden;background:#e5efeb}.bar:after{content:"";display:block;width:45%;height:100%;border-radius:inherit;background:#103f35;animation:move 1s ease-in-out infinite alternate}@keyframes move{to{transform:translateX(122%)}}@media(prefers-reduced-motion:reduce){.bar:after{animation:none}.boot{transition:none}}
+</style>
+</head>
+<body>
+<div class="boot" id="boot"><div class="boot-card"><strong>Abriendo tu farmacia…</strong><div class="bar"></div></div></div>
+<iframe id="app" title="MedsSocial Farmacia 2026"></iframe>
+<script>
+const frame=document.getElementById('app'),boot=document.getElementById('boot');
+frame.src='../farmacia-public-v144/index.html'+location.search+location.hash;
+function leafWindow(){let win=frame.contentWindow;for(let i=0;i<24;i++){try{const child=win.document.querySelector('iframe#app,iframe');if(!child||!child.contentWindow)break;win=child.contentWindow}catch(e){break}}return win}
+function pick(doc,selectors){for(const s of selectors){const el=doc.querySelector(s);if(el)return el}return null}
+function clean(v){return String(v||'').replace(/\s+/g,' ').trim()}
+function labelFor(el){if(!el)return'';const doc=el.ownerDocument,id=el.id;if(id){const lab=doc.querySelector(`label[for="${CSS.escape(id)}"]`);if(lab)return clean(lab.textContent)}const lab=el.closest('label');return lab?clean(lab.textContent):''}
+function selectedValue(root,rx){
+  const controls=[...root.querySelectorAll('select,input')];
+  for(const el of controls){
+    const hay=(el.name||'')+' '+(el.id||'')+' '+labelFor(el)+' '+(el.getAttribute('aria-label')||'');
+    if(!rx.test(hay))continue;
+    if(el.tagName==='SELECT'){const opt=el.selectedOptions&&el.selectedOptions[0];const val=clean(opt?.textContent);if(val&&!/elige|selecciona|cualquiera|todos/i.test(val))return val}
+    else if(el.value)return clean(el.value)
+  }
+  return''
+}
+function selectedText(root,rx){
+  const els=[...root.querySelectorAll('[aria-pressed="true"],[aria-selected="true"],.selected,.is-selected,.active,[data-selected="true"]')];
+  for(const el of els){const txt=clean(el.textContent);const hay=(el.className||'')+' '+(el.dataset?.type||'')+' '+(el.dataset?.kind||'')+' '+txt;if(rx.test(hay)&&txt)return txt}
+  return''
+}
+function timeText(root){
+  const chosen=selectedText(root,/hora|slot|time|\b([01]?\d|2[0-3]):[0-5]\d\b/i);if(chosen){const m=chosen.match(/\b([01]?\d|2[0-3]):[0-5]\d\b/);return m?m[0]:chosen}
+  const pressed=[...root.querySelectorAll('button[aria-pressed="true"],button.active,button.selected,[data-selected="true"]')].map(x=>clean(x.textContent));return pressed.find(x=>/\b([01]?\d|2[0-3]):[0-5]\d\b/.test(x))||''
+}
+function prettyDate(v){if(!v)return'';const m=String(v).match(/(\d{4})-(\d{2})-(\d{2})/);if(!m)return clean(v);try{return new Intl.DateTimeFormat('es-ES',{weekday:'short',day:'numeric',month:'short'}).format(new Date(`${m[1]}-${m[2]}-${m[3]}T12:00:00`))}catch(e){return clean(v)}}
+function inject(doc){
+  if(!doc)return false;
+  const booking=pick(doc,['#booking','.booking','[data-section="booking"]','#availability','.availability','[id*="booking"]','[id*="reserva"]']);
+  if(!booking)return false;
+  if(doc.getElementById('v145-summary'))return true;
+  const style=doc.createElement('style');style.id='v145-style';style.textContent=`
+  .v145-summary{box-sizing:border-box;margin:0 0 18px;padding:16px 17px;border:1px solid #cfe1da;border-radius:20px;background:linear-gradient(135deg,#f0f8f4 0,#fff 68%);color:#173a33;box-shadow:0 10px 30px rgba(17,63,53,.06)}.v145-top{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.v145-kicker{font:900 9px Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#33705f}.v145-title{margin:5px 0 0;font:850 17px/1.2 Inter,system-ui,sans-serif;letter-spacing:-.015em}.v145-state{font:800 10px Inter,system-ui,sans-serif;padding:6px 9px;border-radius:999px;background:#e3f2ec;color:#1d5f4f;white-space:nowrap}.v145-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:13px}.v145-item{min-width:0;padding:10px 11px;border:1px solid #dce8e3;border-radius:13px;background:#fff}.v145-item span{display:block;margin-bottom:4px;font:800 8px Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8a9994}.v145-item strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 11px Inter,system-ui,sans-serif;color:#214a40}.v145-item.empty strong{color:#a0aba7;font-weight:700}.v145-note{margin:11px 0 0;font:600 10px/1.45 Inter,system-ui,sans-serif;color:#71827c}.v145-summary.complete{border-color:#afd2c5;background:linear-gradient(135deg,#eaf7f2 0,#fff 72%)}.v145-summary.complete .v145-state{background:#143f35;color:#fff}
+  @media(max-width:720px){.v145-summary{margin:0 0 14px;padding:14px;border-radius:17px}.v145-grid{grid-template-columns:1fr 1fr}.v145-item{padding:9px 10px}.v145-top{align-items:center}.v145-title{font-size:15px}}
+  @media(prefers-reduced-motion:reduce){.v145-summary *{scroll-behavior:auto!important}}
+  `;doc.head.append(style);
+  const panel=doc.createElement('aside');panel.id='v145-summary';panel.className='v145-summary';panel.setAttribute('aria-label','Resumen de tu cita');panel.setAttribute('aria-live','polite');
+  panel.innerHTML='<div class="v145-top"><div><div class="v145-kicker">Reserva online</div><h3 class="v145-title">Resumen de tu cita</h3></div><span class="v145-state" id="v145-state">Elige los datos</span></div><div class="v145-grid"><div class="v145-item" data-v145="service"><span>Servicio</span><strong>Por elegir</strong></div><div class="v145-item" data-v145="professional"><span>Profesional</span><strong>Cualquiera</strong></div><div class="v145-item" data-v145="date"><span>Fecha</span><strong>Por elegir</strong></div><div class="v145-item" data-v145="time"><span>Hora</span><strong>Por elegir</strong></div></div><p class="v145-note">Comprueba servicio, fecha y hora antes de confirmar. Tus datos personales no se muestran en este resumen.</p>';
+  booking.prepend(panel);
+  const params=new URLSearchParams(location.search);
+  function update(){
+    const service=selectedValue(booking,/service|servicio|prestaci[oó]n/i)||selectedText(booking,/service|servicio|prestaci[oó]n/i)||clean(params.get('service'));
+    const professional=selectedValue(booking,/professional|profesional|staff|employee/i)||selectedText(booking,/professional|profesional/i)||clean(params.get('professional'));
+    const rawDate=selectedValue(booking,/date|fecha|day|d[ií]a/i)||selectedText(booking,/date|fecha|d[ií]a/i)||clean(params.get('date'));
+    const time=timeText(booking)||clean(params.get('slot'));
+    const values={service:service||'Por elegir',professional:professional||'Cualquiera',date:prettyDate(rawDate)||'Por elegir',time:time||'Por elegir'};
+    for(const [key,value] of Object.entries(values)){const item=panel.querySelector(`[data-v145="${key}"]`);if(!item)continue;item.querySelector('strong').textContent=value;item.classList.toggle('empty',value==='Por elegir'||value==='Cualquiera')}
+    const complete=!!service&&!!rawDate&&!!time;panel.classList.toggle('complete',complete);panel.querySelector('#v145-state').textContent=complete?'Listo para confirmar':service?'Completa fecha y hora':'Elige servicio y hora';
+  }
+  booking.addEventListener('change',()=>setTimeout(update,0));booking.addEventListener('click',()=>setTimeout(update,60));
+  const observer=new MutationObserver(()=>requestAnimationFrame(update));observer.observe(booking,{subtree:true,attributes:true,attributeFilter:['class','aria-pressed','aria-selected','data-selected'],childList:true});
+  update();doc.documentElement.dataset.frontend='v145';return true
+}
+function attempt(n=0){try{const win=leafWindow(),doc=win.document;if(doc&&doc.readyState!=='loading'&&inject(doc)){document.title=(doc.title||document.title).replace(/v1\d+/i,'v145');boot.classList.add('hide');setTimeout(()=>boot.remove(),300);return}}catch(e){}if(n<200)setTimeout(()=>attempt(n+1),100);else{boot.classList.add('hide');console.warn('v145 booking summary injection unavailable')}}
+frame.addEventListener('load',()=>attempt());
+</script>
+</body>
+</html>
