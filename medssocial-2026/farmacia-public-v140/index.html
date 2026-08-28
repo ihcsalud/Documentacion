@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f3f35">
+<meta name="robots" content="noindex">
+<meta name="description" content="MedsSocial Farmacia 2026: ficha pública, servicios, profesionales, agenda, reservas y actividades.">
+<title>MedsSocial · Farmacia pública v140</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fbfaf6}#app{display:block;width:100%;height:100%;border:0;background:#fbfaf6}.boot{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:radial-gradient(circle at 14% 0,#e3f5ee,transparent 34%),#fbfaf6;color:#173a33;font:16px Inter,system-ui,-apple-system,"Segoe UI",sans-serif;transition:opacity .25s ease}.boot.hide{opacity:0;pointer-events:none}.boot-card{width:min(520px,calc(100% - 40px));padding:28px;border:1px solid #dce7e2;border-radius:28px;background:#fff;box-shadow:0 22px 64px rgba(18,63,55,.12)}.boot strong{font-size:21px}.bar{height:5px;margin-top:18px;border-radius:99px;overflow:hidden;background:#e5efeb}.bar:after{content:"";display:block;width:45%;height:100%;border-radius:inherit;background:#103f35;animation:move 1s ease-in-out infinite alternate}@keyframes move{to{transform:translateX(122%)}}@media(prefers-reduced-motion:reduce){.bar:after{animation:none}.boot{transition:none}}
+</style>
+</head>
+<body>
+<div class="boot" id="boot"><div class="boot-card"><strong>Abriendo tu farmacia…</strong><div class="bar"></div></div></div>
+<iframe id="app" title="MedsSocial Farmacia 2026"></iframe>
+<script>
+const frame=document.getElementById('app'),boot=document.getElementById('boot');
+frame.src='../farmacia-public-v139/index.html'+location.search+location.hash;
+function leafWindow(){let win=frame.contentWindow;for(let i=0;i<14;i++){try{const child=win.document.querySelector('iframe#app,iframe');if(!child||!child.contentWindow)break;win=child.contentWindow}catch(e){break}}return win}
+function inject(doc){
+  if(!doc||doc.getElementById('v140-confidence'))return true;
+  const style=doc.createElement('style');style.id='v140-style';style.textContent=`
+  .v140-confidence{width:min(1180px,calc(100% - 40px));box-sizing:border-box;margin:-18px auto 34px;position:relative;z-index:4}.v140-grid{display:grid;grid-template-columns:1.15fr repeat(3,1fr);overflow:hidden;border:1px solid #d7e4df;border-radius:22px;background:rgba(255,255,255,.97);box-shadow:0 18px 52px rgba(17,63,53,.10);backdrop-filter:blur(16px)}.v140-lead,.v140-item{min-height:86px;box-sizing:border-box;padding:18px 20px}.v140-lead{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#123f35,#1a5b4d);color:#fff}.v140-mark{width:38px;height:38px;flex:0 0 38px;display:grid;place-items:center;border-radius:13px;background:rgba(255,255,255,.13);font-size:18px}.v140-lead strong{display:block;font-size:14px;line-height:1.25}.v140-lead span{display:block;margin-top:4px;color:#d8ebe5;font-size:12px;line-height:1.35}.v140-item{display:flex;align-items:center;gap:11px;border-left:1px solid #e3ebe8;color:#173f36;cursor:pointer;transition:background .18s ease}.v140-item:hover{background:#f5faf7}.v140-icon{width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border-radius:12px;background:#e8f3ef;color:#175445;font-size:15px;font-weight:900}.v140-item strong{display:block;font-size:13px}.v140-item span{display:block;margin-top:3px;color:#71817c;font-size:11px;line-height:1.3}.v140-item:focus-visible{outline:3px solid #b8e1d3;outline-offset:-3px}.v140-item[role=button]{user-select:none}
+  @media(max-width:900px){.v140-confidence{width:min(100% - 24px,1180px);margin:10px auto 26px}.v140-grid{grid-template-columns:1fr 1fr}.v140-lead{grid-column:1/-1}.v140-item:nth-child(3){border-left:0;border-top:1px solid #e3ebe8}.v140-item:nth-child(2),.v140-item:nth-child(4){border-top:1px solid #e3ebe8}}
+  @media(max-width:520px){.v140-grid{grid-template-columns:1fr}.v140-lead{min-height:auto}.v140-item{min-height:70px;border-left:0!important;border-top:1px solid #e3ebe8}.v140-confidence{margin-top:8px}.v140-lead,.v140-item{padding:15px 16px}}
+  @media(prefers-reduced-motion:reduce){.v140-item{transition:none}}
+  `;doc.head.append(style);
+  const section=doc.createElement('section');section.id='v140-confidence';section.className='v140-confidence';section.setAttribute('aria-label','Reserva y atención en esta farmacia');section.innerHTML=`<div class="v140-grid"><div class="v140-lead"><div class="v140-mark">✦</div><div><strong>Tu farmacia, también online</strong><span>Consulta, reserva y gestiona tu visita desde esta misma ficha.</span></div></div><div class="v140-item" role="button" tabindex="0" data-action="book"><div class="v140-icon">↗</div><div><strong>Reserva online</strong><span>Elige servicio y hora disponible</span></div></div><div class="v140-item" role="button" tabindex="0" data-action="manage"><div class="v140-icon">✓</div><div><strong>Sin crear cuenta</strong><span>Recupera después tu cita privada</span></div></div><div class="v140-item" role="button" tabindex="0" data-action="contact"><div class="v140-icon">⌁</div><div><strong>Contacto directo</strong><span>Teléfono, WhatsApp y cómo llegar</span></div></div></div>`;
+  function findText(re){return [...doc.querySelectorAll('button,a')].find(x=>re.test((x.textContent||'').trim()))}
+  function go(selectors,re){for(const s of selectors){const el=doc.querySelector(s);if(el){el.scrollIntoView({behavior:'smooth',block:'start'});return true}}const t=findText(re);if(t){t.click();return true}return false}
+  const actions={book:()=>go(['#booking','.booking','[data-section="booking"]'],/reservar|hora disponible/i),manage:()=>go(['#my-booking','.my-booking','.my-appointment','[data-section="my-booking"]'],/mi cita/i),contact:()=>go(['#contact','.contact','#location','.location','footer'],/llamar|whatsapp|cómo llegar|contacto/i)};
+  section.querySelectorAll('.v140-item').forEach(el=>{const run=()=>actions[el.dataset.action]?.();el.addEventListener('click',run);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();run()}})});
+  const hero=doc.querySelector('main section, main .hero, .hero, header+section, header');if(hero&&hero.parentNode)hero.parentNode.insertBefore(section,hero.nextSibling);else doc.body.prepend(section);
+  doc.documentElement.dataset.frontend='v140';return true;
+}
+function attempt(n=0){try{const win=leafWindow(),doc=win.document;if(doc&&doc.readyState!=='loading'&&inject(doc)){document.title=(doc.title||document.title).replace(/v1\d+/i,'v140');boot.classList.add('hide');setTimeout(()=>boot.remove(),300);return}}catch(e){}if(n<100)setTimeout(()=>attempt(n+1),100);else{boot.classList.add('hide');console.warn('v140 leaf injection unavailable')}}
+frame.addEventListener('load',()=>attempt());
+</script>
+</body>
+</html>
