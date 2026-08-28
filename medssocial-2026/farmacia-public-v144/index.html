@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f3f35">
+<meta name="robots" content="noindex">
+<meta name="description" content="MedsSocial Farmacia 2026: ficha pública, servicios, profesionales, agenda, reservas, actividades y contacto.">
+<title>MedsSocial · Farmacia pública v144</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fbfaf6}#app{display:block;width:100%;height:100%;border:0;background:#fbfaf6}.boot{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:radial-gradient(circle at 14% 0,#e3f5ee,transparent 34%),#fbfaf6;color:#173a33;font:16px Inter,system-ui,-apple-system,"Segoe UI",sans-serif;transition:opacity .25s ease}.boot.hide{opacity:0;pointer-events:none}.boot-card{width:min(520px,calc(100% - 40px));padding:28px;border:1px solid #dce7e2;border-radius:28px;background:#fff;box-shadow:0 22px 64px rgba(18,63,55,.12)}.boot strong{font-size:21px}.bar{height:5px;margin-top:18px;border-radius:99px;overflow:hidden;background:#e5efeb}.bar:after{content:"";display:block;width:45%;height:100%;border-radius:inherit;background:#103f35;animation:move 1s ease-in-out infinite alternate}@keyframes move{to{transform:translateX(122%)}}@media(prefers-reduced-motion:reduce){.bar:after{animation:none}.boot{transition:none}}
+</style>
+</head>
+<body>
+<div class="boot" id="boot"><div class="boot-card"><strong>Abriendo tu farmacia…</strong><div class="bar"></div></div></div>
+<iframe id="app" title="MedsSocial Farmacia 2026"></iframe>
+<script>
+const frame=document.getElementById('app'),boot=document.getElementById('boot');
+frame.src='../farmacia-public-v143/index.html'+location.search+location.hash;
+function leafWindow(){let win=frame.contentWindow;for(let i=0;i<22;i++){try{const child=win.document.querySelector('iframe#app,iframe');if(!child||!child.contentWindow)break;win=child.contentWindow}catch(e){break}}return win}
+function pick(doc,selectors){for(const s of selectors){const el=doc.querySelector(s);if(el)return el}return null}
+function findLink(doc,patterns){for(const p of patterns){const el=[...doc.querySelectorAll('a[href]')].find(a=>p.test(a.getAttribute('href')||'')||p.test(a.textContent||''));if(el)return el}return null}
+function inject(doc){
+  if(!doc||doc.getElementById('v144-actions'))return true;
+  const booking=pick(doc,['#booking','.booking','[data-section="booking"]','#availability','.availability']);
+  const services=pick(doc,['#services','.services','[data-section="services"]']);
+  const phone=findLink(doc,[/^tel:/i,/llamar|tel[eé]fono/i]);
+  const whatsapp=findLink(doc,[/wa\.me|whatsapp/i]);
+  const maps=findLink(doc,[/google\.[^/]+\/maps|maps\.app|maps\?|como llegar|cómo llegar/i]);
+  const actions=[];
+  if(booking)actions.push({kind:'Reserva',title:'Reservar online',desc:'Elige servicio y hora disponible',target:booking,primary:true});
+  if(phone)actions.push({kind:'Teléfono',title:'Llamar a la farmacia',desc:'Contacto directo',href:phone.href});
+  if(whatsapp)actions.push({kind:'WhatsApp',title:'Escribir por WhatsApp',desc:'Consulta rápida',href:whatsapp.href});
+  if(maps)actions.push({kind:'Ubicación',title:'Cómo llegar',desc:'Abrir indicaciones',href:maps.href});
+  if(actions.length<2&&services)actions.push({kind:'Servicios',title:'Ver servicios',desc:'Consulta lo que ofrece esta farmacia',target:services});
+  if(!actions.length){doc.documentElement.dataset.frontend='v144';return true}
+  const style=doc.createElement('style');style.id='v144-style';style.textContent=`.v144-actions{width:min(1180px,calc(100% - 40px));margin:6px auto 34px;color:#173a33}.v144-shell{display:grid;grid-template-columns:minmax(220px,.72fr) 1.6fr;gap:18px;align-items:stretch;padding:18px;border:1px solid #d8e5df;border-radius:26px;background:linear-gradient(135deg,#f1f8f5 0,#fff 44%,#fbfaf6 100%);box-shadow:0 18px 48px rgba(17,63,53,.075)}.v144-intro{padding:7px 8px}.v144-kicker{font-size:10px;font-weight:900;letter-spacing:.15em;text-transform:uppercase;color:#2b6b5b}.v144-title{margin:7px 0 7px;font-size:clamp(20px,2vw,27px);line-height:1.08;letter-spacing:-.025em}.v144-copy{margin:0;color:#70807b;font-size:12px;line-height:1.5}.v144-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}.v144-action{appearance:none;display:flex;min-width:0;min-height:86px;box-sizing:border-box;flex-direction:column;justify-content:center;align-items:flex-start;gap:4px;padding:14px 15px;border:1px solid #d7e5df;border-radius:17px;background:#fff;color:#17483d;text-decoration:none;text-align:left;cursor:pointer;box-shadow:0 7px 20px rgba(17,63,53,.045);transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}.v144-action:hover{transform:translateY(-2px);border-color:#b8d5ca;box-shadow:0 12px 26px rgba(17,63,53,.09)}.v144-action.primary{background:#143f35;border-color:#143f35;color:#fff}.v144-kind{font:900 9px Inter,system-ui,sans-serif;letter-spacing:.11em;text-transform:uppercase;opacity:.62}.v144-action strong{font:850 13px Inter,system-ui,sans-serif;line-height:1.25}.v144-action small{font:600 10px Inter,system-ui,sans-serif;line-height:1.35;opacity:.65}.v144-action:focus-visible{outline:3px solid #a9d8c8;outline-offset:2px}@media(max-width:800px){.v144-actions{width:calc(100% - 24px);margin:4px auto 28px}.v144-shell{grid-template-columns:1fr;padding:16px}.v144-intro{padding:2px}.v144-grid{display:flex;overflow:auto;margin-right:-16px;padding:1px 16px 4px 0;scroll-snap-type:x mandatory;scrollbar-width:none}.v144-grid::-webkit-scrollbar{display:none}.v144-action{flex:0 0 min(74vw,245px);min-height:92px;scroll-snap-align:start}.v144-action.primary{flex-basis:min(78vw,260px)}}@media(prefers-reduced-motion:reduce){.v144-action{transition:none}}`;doc.head.append(style);
+  const section=doc.createElement('section');section.id='v144-actions';section.className='v144-actions';section.setAttribute('aria-labelledby','v144-title');const shell=doc.createElement('div');shell.className='v144-shell';const intro=doc.createElement('div');intro.className='v144-intro';intro.innerHTML='<div class="v144-kicker">Accesos rápidos</div><h2 class="v144-title" id="v144-title">Tu farmacia, a un toque</h2><p class="v144-copy">Reserva, contacta o llega sin perder tiempo.</p>';const grid=doc.createElement('div');grid.className='v144-grid';grid.setAttribute('role','list');
+  actions.slice(0,4).forEach(a=>{const el=a.href?doc.createElement('a'):doc.createElement('button');el.className='v144-action'+(a.primary?' primary':'');el.setAttribute('role','listitem');if(a.href){el.href=a.href;if(!/^tel:/i.test(a.href)){el.target='_blank';el.rel='noopener'}}else{el.type='button';el.addEventListener('click',()=>a.target?.scrollIntoView({behavior:'smooth',block:'start'}))}const k=doc.createElement('span');k.className='v144-kind';k.textContent=a.kind;const strong=doc.createElement('strong');strong.textContent=a.title;const small=doc.createElement('small');small.textContent=a.desc;el.append(k,strong,small);grid.append(el)});shell.append(intro,grid);section.append(shell);
+  const nav=doc.getElementById('v143-nav');const hero=pick(doc,['main .hero','.hero','main section','header']);if(nav&&nav.parentNode)nav.parentNode.insertBefore(section,nav.nextSibling);else if(hero&&hero.parentNode)hero.parentNode.insertBefore(section,hero.nextSibling);else doc.body.prepend(section);doc.documentElement.dataset.frontend='v144';return true
+}
+function attempt(n=0){try{const win=leafWindow(),doc=win.document;if(doc&&doc.readyState!=='loading'&&inject(doc)){document.title=(doc.title||document.title).replace(/v1\d+/i,'v144');boot.classList.add('hide');setTimeout(()=>boot.remove(),300);return}}catch(e){}if(n<180)setTimeout(()=>attempt(n+1),100);else{boot.classList.add('hide');console.warn('v144 leaf injection unavailable')}}
+frame.addEventListener('load',()=>attempt());
+</script>
+</body>
+</html>
