@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f3f35">
+<meta name="robots" content="noindex">
+<meta name="description" content="MedsSocial Farmacia 2026: ficha pública, servicios, profesionales, agenda, reservas, actividades y preguntas frecuentes.">
+<title>MedsSocial · Farmacia pública v141</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fbfaf6}#app{display:block;width:100%;height:100%;border:0;background:#fbfaf6}.boot{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:radial-gradient(circle at 14% 0,#e3f5ee,transparent 34%),#fbfaf6;color:#173a33;font:16px Inter,system-ui,-apple-system,"Segoe UI",sans-serif;transition:opacity .25s ease}.boot.hide{opacity:0;pointer-events:none}.boot-card{width:min(520px,calc(100% - 40px));padding:28px;border:1px solid #dce7e2;border-radius:28px;background:#fff;box-shadow:0 22px 64px rgba(18,63,55,.12)}.boot strong{font-size:21px}.bar{height:5px;margin-top:18px;border-radius:99px;overflow:hidden;background:#e5efeb}.bar:after{content:"";display:block;width:45%;height:100%;border-radius:inherit;background:#103f35;animation:move 1s ease-in-out infinite alternate}@keyframes move{to{transform:translateX(122%)}}@media(prefers-reduced-motion:reduce){.bar:after{animation:none}.boot{transition:none}}
+</style>
+</head>
+<body>
+<div class="boot" id="boot"><div class="boot-card"><strong>Abriendo tu farmacia…</strong><div class="bar"></div></div></div>
+<iframe id="app" title="MedsSocial Farmacia 2026"></iframe>
+<script>
+const frame=document.getElementById('app'),boot=document.getElementById('boot');
+frame.src='../farmacia-public-v140/index.html'+location.search+location.hash;
+function leafWindow(){let win=frame.contentWindow;for(let i=0;i<16;i++){try{const child=win.document.querySelector('iframe#app,iframe');if(!child||!child.contentWindow)break;win=child.contentWindow}catch(e){break}}return win}
+function inject(doc){
+  if(!doc||doc.getElementById('v141-faq'))return true;
+  const style=doc.createElement('style');style.id='v141-style';style.textContent=`
+  .v141-faq{width:min(1180px,calc(100% - 40px));box-sizing:border-box;margin:58px auto 74px;color:#173a33}.v141-head{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:end;margin-bottom:24px}.v141-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:12px;color:#2a6a5a;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.v141-title{margin:0;font-size:clamp(28px,3vw,44px);line-height:1.02;letter-spacing:-.035em}.v141-intro{margin:0;color:#667872;font-size:15px;line-height:1.65}.v141-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}.v141-item{border:1px solid #dce7e2;border-radius:18px;background:#fff;box-shadow:0 12px 34px rgba(18,63,55,.06);overflow:hidden}.v141-item summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:19px 20px;cursor:pointer;font-size:14px;font-weight:800;line-height:1.35}.v141-item summary::-webkit-details-marker{display:none}.v141-plus{width:28px;height:28px;flex:0 0 28px;border-radius:10px;background:#edf6f2;color:#1d5b4c;display:grid;place-items:center;font-size:18px;transition:transform .18s ease}.v141-item[open] .v141-plus{transform:rotate(45deg)}.v141-answer{padding:0 20px 20px;color:#687a74;font-size:13px;line-height:1.65}.v141-cta{margin-top:18px;padding:22px 24px;border-radius:20px;background:linear-gradient(135deg,#123f35,#1c5d4f);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:24px}.v141-cta strong{display:block;font-size:16px}.v141-cta span{display:block;margin-top:4px;color:#d9ebe5;font-size:12px}.v141-button{border:0;border-radius:14px;background:#fff;color:#16493d;padding:12px 17px;font:800 13px Inter,system-ui,sans-serif;cursor:pointer;white-space:nowrap}.v141-button:focus-visible,.v141-item summary:focus-visible{outline:3px solid #b6dfd1;outline-offset:2px}
+  @media(max-width:760px){.v141-faq{width:min(100% - 24px,1180px);margin:42px auto 56px}.v141-head{grid-template-columns:1fr;gap:14px}.v141-list{grid-template-columns:1fr}.v141-cta{align-items:flex-start;flex-direction:column}.v141-button{width:100%;min-height:46px}.v141-item summary{min-height:44px}}
+  @media(prefers-reduced-motion:reduce){.v141-plus{transition:none}}
+  `;doc.head.append(style);
+  const faqData=[
+    ['¿La disponibilidad que veo es real?','Sí. Los huecos se consultan sobre la agenda pública de la farmacia. Si un horario deja de estar disponible, la reserva no se confirma.'],
+    ['¿Necesito crear una cuenta para reservar?','No. Puedes completar la reserva como paciente y después recuperar tu cita mediante el acceso privado generado al confirmar.'],
+    ['¿Puedo cancelar mi cita online?','Sí. Desde “Mi cita” puedes consultar el estado y cancelar una reserva cuando la política del servicio lo permita.'],
+    ['¿Qué datos tengo que facilitar?','Solo los datos necesarios para identificar y gestionar la reserva, junto con el consentimiento de privacidad antes de confirmar.'],
+    ['¿Qué debo llevar a la cita?','Depende del servicio. Si requiere documentación, medicación o alguna preparación concreta, la farmacia puede indicarlo en la información del servicio o al contactar contigo.'],
+    ['¿Y si necesito hablar con la farmacia?','Puedes usar teléfono, WhatsApp o las opciones de contacto de esta ficha. Para una urgencia sanitaria, utiliza los canales asistenciales de urgencias correspondientes.']
+  ];
+  const section=doc.createElement('section');section.id='v141-faq';section.className='v141-faq';section.setAttribute('aria-labelledby','v141-title');section.innerHTML=`<div class="v141-head"><div><div class="v141-eyebrow">Antes de reservar</div><h2 class="v141-title" id="v141-title">Todo claro antes de venir</h2></div><p class="v141-intro">Respuestas rápidas sobre la agenda online, tus datos y la gestión de la cita. Sin cuentas innecesarias ni llamadas si no las necesitas.</p></div><div class="v141-list">${faqData.map(([q,a],i)=>`<details class="v141-item"${i===0?' open':''}><summary>${q}<span class="v141-plus" aria-hidden="true">+</span></summary><div class="v141-answer">${a}</div></details>`).join('')}</div><div class="v141-cta"><div><strong>¿Ya sabes qué necesitas?</strong><span>Consulta servicios y elige una hora disponible en la agenda.</span></div><button class="v141-button" type="button">Ver horas disponibles</button></div>`;
+  const footer=doc.querySelector('footer');if(footer&&footer.parentNode)footer.parentNode.insertBefore(section,footer);else doc.body.append(section);
+  section.querySelector('.v141-button').addEventListener('click',()=>{const target=doc.querySelector('#booking,.booking,[data-section="booking"],#availability,.availability');if(target)target.scrollIntoView({behavior:'smooth',block:'start'});else{const b=[...doc.querySelectorAll('button,a')].find(x=>/reservar|hora disponible/i.test((x.textContent||'').trim()));b?.click()}});
+  let schema=doc.getElementById('v141-faq-schema');if(!schema){schema=doc.createElement('script');schema.id='v141-faq-schema';schema.type='application/ld+json';schema.textContent=JSON.stringify({'@context':'https://schema.org','@type':'FAQPage',mainEntity:faqData.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))});doc.head.append(schema)}
+  doc.documentElement.dataset.frontend='v141';return true;
+}
+function attempt(n=0){try{const win=leafWindow(),doc=win.document;if(doc&&doc.readyState!=='loading'&&inject(doc)){document.title=(doc.title||document.title).replace(/v1\d+/i,'v141');boot.classList.add('hide');setTimeout(()=>boot.remove(),300);return}}catch(e){}if(n<120)setTimeout(()=>attempt(n+1),100);else{boot.classList.add('hide');console.warn('v141 leaf injection unavailable')}}
+frame.addEventListener('load',()=>attempt());
+</script>
+</body>
+</html>
