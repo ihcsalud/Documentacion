@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f3f35">
+<meta name="robots" content="noindex">
+<meta name="description" content="MedsSocial Farmacia 2026: ficha pública, servicios, profesionales, agenda, reservas, actividades y contenidos.">
+<title>MedsSocial · Farmacia pública v143</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fbfaf6}#app{display:block;width:100%;height:100%;border:0;background:#fbfaf6}.boot{position:fixed;inset:0;z-index:10;display:grid;place-items:center;background:radial-gradient(circle at 14% 0,#e3f5ee,transparent 34%),#fbfaf6;color:#173a33;font:16px Inter,system-ui,-apple-system,"Segoe UI",sans-serif;transition:opacity .25s ease}.boot.hide{opacity:0;pointer-events:none}.boot-card{width:min(520px,calc(100% - 40px));padding:28px;border:1px solid #dce7e2;border-radius:28px;background:#fff;box-shadow:0 22px 64px rgba(18,63,55,.12)}.boot strong{font-size:21px}.bar{height:5px;margin-top:18px;border-radius:99px;overflow:hidden;background:#e5efeb}.bar:after{content:"";display:block;width:45%;height:100%;border-radius:inherit;background:#103f35;animation:move 1s ease-in-out infinite alternate}@keyframes move{to{transform:translateX(122%)}}@media(prefers-reduced-motion:reduce){.bar:after{animation:none}.boot{transition:none}}
+</style>
+</head>
+<body>
+<div class="boot" id="boot"><div class="boot-card"><strong>Abriendo tu farmacia…</strong><div class="bar"></div></div></div>
+<iframe id="app" title="MedsSocial Farmacia 2026"></iframe>
+<script>
+const frame=document.getElementById('app'),boot=document.getElementById('boot');
+frame.src='../farmacia-public-v142/index.html'+location.search+location.hash;
+function leafWindow(){let win=frame.contentWindow;for(let i=0;i<20;i++){try{const child=win.document.querySelector('iframe#app,iframe');if(!child||!child.contentWindow)break;win=child.contentWindow}catch(e){break}}return win}
+function pick(doc,selectors){for(const s of selectors){const el=doc.querySelector(s);if(el)return el}return null}
+function inject(doc){
+  if(!doc||doc.getElementById('v143-nav'))return true;
+  const defs=[['Inicio',['main .hero','.hero','main section']],['Servicios',['#services','.services','[data-section="services"]']],['Equipo',['#professionals','.professionals','#team','.team','[data-section="professionals"]']],['Reserva',['#booking','.booking','[data-section="booking"]','#availability','.availability']],['Actividades',['#events','.events','#activities','.activities','[data-section="events"]']],['Contacto',['#contact','.contact','[data-section="contact"]','footer']]];
+  const items=defs.map(([label,selectors])=>({label,target:pick(doc,selectors)})).filter(x=>x.target);
+  if(items.length<3){doc.documentElement.dataset.frontend='v143';return true}
+  items.forEach((x,i)=>{if(!x.target.id)x.target.id='v143-target-'+i});
+  const style=doc.createElement('style');style.id='v143-style';style.textContent=`.v143-nav-wrap{position:sticky;top:10px;z-index:80;width:min(1180px,calc(100% - 40px));margin:14px auto 26px;pointer-events:none}.v143-nav{pointer-events:auto;display:flex;align-items:center;gap:6px;padding:7px;border:1px solid rgba(205,221,215,.95);border-radius:18px;background:rgba(255,255,255,.9);box-shadow:0 14px 38px rgba(18,63,55,.1);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);overflow:auto;scrollbar-width:none}.v143-nav::-webkit-scrollbar{display:none}.v143-link{flex:0 0 auto;min-height:42px;padding:0 13px;border:0;border-radius:12px;background:transparent;color:#60736d;font:800 12px Inter,system-ui,sans-serif;cursor:pointer;transition:background .16s ease,color .16s ease,transform .16s ease}.v143-link:hover{background:#edf6f2;color:#174b3f}.v143-link[aria-current="true"]{background:#e6f2ed;color:#143f35}.v143-link.v143-book{margin-left:auto;background:#143f35;color:#fff;padding-inline:16px}.v143-link.v143-book:hover{background:#0e342c}.v143-link:focus-visible{outline:3px solid #b6dfd1;outline-offset:2px}@media(max-width:760px){.v143-nav-wrap{top:max(6px,env(safe-area-inset-top));width:calc(100% - 16px);margin:8px auto 20px}.v143-nav{border-radius:16px;padding:6px}.v143-link{min-height:44px;padding:0 12px}.v143-link.v143-book{margin-left:0;position:sticky;right:0;box-shadow:-10px 0 18px rgba(255,255,255,.75)}}@media(prefers-reduced-motion:reduce){.v143-link{transition:none}}`;doc.head.append(style);
+  const wrap=doc.createElement('div');wrap.id='v143-nav';wrap.className='v143-nav-wrap';wrap.setAttribute('aria-label','Navegación rápida de la farmacia');const nav=doc.createElement('nav');nav.className='v143-nav';const ordered=[...items.filter(x=>x.label!=='Reserva'),...items.filter(x=>x.label==='Reserva')];ordered.forEach(x=>{const b=doc.createElement('button');b.type='button';b.className='v143-link'+(x.label==='Reserva'?' v143-book':'');b.textContent=x.label;b.dataset.target=x.target.id;b.addEventListener('click',()=>x.target.scrollIntoView({behavior:'smooth',block:'start'}));nav.append(b)});wrap.append(nav);const anchor=pick(doc,['main','.main','#app']);if(anchor&&anchor.parentNode)anchor.parentNode.insertBefore(wrap,anchor);else doc.body.prepend(wrap);
+  const buttons=[...nav.querySelectorAll('.v143-link')];if('IntersectionObserver' in doc.defaultView){const io=new doc.defaultView.IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(!visible)return;buttons.forEach(b=>b.setAttribute('aria-current',String(b.dataset.target===visible.target.id)))},{rootMargin:'-22% 0px -62% 0px',threshold:[0,.1,.35]});items.forEach(x=>io.observe(x.target))}doc.documentElement.dataset.frontend='v143';return true
+}
+function attempt(n=0){try{const win=leafWindow(),doc=win.document;if(doc&&doc.readyState!=='loading'&&inject(doc)){document.title=(doc.title||document.title).replace(/v1\d+/i,'v143');boot.classList.add('hide');setTimeout(()=>boot.remove(),300);return}}catch(e){}if(n<160)setTimeout(()=>attempt(n+1),100);else{boot.classList.add('hide');console.warn('v143 leaf injection unavailable')}}
+frame.addEventListener('load',()=>attempt());
+</script>
+</body>
+</html>
